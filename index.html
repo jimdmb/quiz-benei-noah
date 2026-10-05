@@ -1,0 +1,1125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Bnei Noah Quiz</title>
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#E9EEF2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1320" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bnei Noah">
+<style>
+/* Fonts bundled locally so the app works offline */
+@font-face { font-family: "Frank Ruhl Libre"; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/frank-ruhl-libre-latin-500-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Frank Ruhl Libre"; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/frank-ruhl-libre-latin-700-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Frank Ruhl Libre"; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/frank-ruhl-libre-hebrew-500-normal.woff2) format("woff2"); unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Frank Ruhl Libre"; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/frank-ruhl-libre-hebrew-700-normal.woff2) format("woff2"); unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Atkinson Hyperlegible"; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/atkinson-hyperlegible-latin-400-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Atkinson Hyperlegible"; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/atkinson-hyperlegible-latin-700-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* Base reset + Android safe areas (Capacitor injects --safe-area-inset-*) */
+*, *::before, *::after { box-sizing: border-box; }
+:root {
+  --inset-top: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  --inset-bottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+  --inset-left: var(--safe-area-inset-left, env(safe-area-inset-left, 0px));
+  --inset-right: var(--safe-area-inset-right, env(safe-area-inset-right, 0px));
+  padding: var(--inset-top) var(--inset-right) 0 var(--inset-left);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+body { margin: 0; overscroll-behavior-y: none; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+
+/* Layout: one phone-width column; screens swap in place. The keshet (rainbow arc of the covenant, Gen 9:13) is the single bold element: brand mark on home, progress gauge in play. */
+:root {
+  --bg: #E9EEF2;
+  --surface: #FFFFFF;
+  --ink: #16203A;
+  --muted: #56627A;
+  --line: #D0D8E1;
+  --accent: #2B4A9E;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #DEE6F7;
+  --good: #2C7A55;
+  --good-soft: #DDEFE5;
+  --bad: #B3443A;
+  --bad-soft: #F6E1DE;
+  --k1: #C4553F; --k2: #D8873A; --k3: #D2AA3C; --k4: #5C9A6A; --k5: #3A8AAE; --k6: #3B55A3; --k7: #7B5A9E;
+  --f-display: "Frank Ruhl Libre", "Iowan Old Style", "Times New Roman", serif;
+  --f-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1320; --surface: #171E30; --ink: #E7EBF3; --muted: #9AA4B9; --line: #2A3350;
+    --accent: #8EA6EE; --accent-ink: #0E1320; --accent-soft: #222D4B;
+    --good: #5DBE8C; --good-soft: #16302A; --bad: #EA8277; --bad-soft: #3A1F1F;
+    --k1: #E0765F; --k2: #EDA257; --k3: #E6C45E; --k4: #7DBA8A; --k5: #5FA9CB; --k6: #7088D6; --k7: #A385C4;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1320; --surface: #171E30; --ink: #E7EBF3; --muted: #9AA4B9; --line: #2A3350;
+  --accent: #8EA6EE; --accent-ink: #0E1320; --accent-soft: #222D4B;
+  --good: #5DBE8C; --good-soft: #16302A; --bad: #EA8277; --bad-soft: #3A1F1F;
+  --k1: #E0765F; --k2: #EDA257; --k3: #E6C45E; --k4: #7DBA8A; --k5: #5FA9CB; --k6: #7088D6; --k7: #A385C4;
+  color-scheme: dark;
+}
+
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.app {
+  max-width: 30rem;
+  min-height: 100%;
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-block: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+[tabindex="-1"]:focus { outline: none; }
+.he { font-family: var(--f-display); direction: rtl; unicode-bidi: isolate; }
+
+/* ---------- Home ---------- */
+.brand { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+.brand svg { width: 100%; max-width: 250px; height: auto; display: block; }
+.band { fill: none; stroke-width: 7; }
+.hero-he { font-family: var(--f-display); font-size: 25px; font-weight: 700; fill: var(--ink); }
+.brand h1 {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 2.15rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+.tagline { margin: 0; color: var(--muted); max-width: 34ch; text-wrap: balance; }
+
+.label {
+  margin: 0 0 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: transform .12s ease, filter .15s ease;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn:active { transform: scale(0.985); }
+.btn small { font-weight: 400; font-size: 0.85rem; opacity: 0.85; }
+.btn.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--line); }
+.btn.ghost:hover { border-color: var(--accent); filter: none; }
+
+.cats {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.cat {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  grid-template-areas: "ico name he" "ico desc desc" "ico best best";
+  column-gap: 12px;
+  align-items: baseline;
+  padding: 14px 16px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.cat:first-child { border-top: 0; }
+@media (hover: hover) { .cat:hover { background: var(--accent-soft); } }
+.cat:focus-visible { outline-offset: -3px; border-radius: 0; }
+.cat .badge { grid-area: ico; align-self: center; }
+.badge { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+/* les jeux prennent chacun une couleur de l'arc */
+.badge.tint { color: var(--tint); background: color-mix(in srgb, var(--tint) 16%, var(--surface)); }
+.ico { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.ico .fill { fill: currentColor; stroke: none; }
+.ico-he { font-family: var(--f-display); font-size: 19px; font-weight: 700; fill: currentColor; stroke: none; }
+.cat .name { grid-area: name; font-weight: 700; font-size: 1.05rem; }
+.cat .he { grid-area: he; justify-self: end; color: var(--muted); font-size: 1.05rem; }
+.cat .desc { grid-area: desc; color: var(--muted); font-size: 0.9rem; }
+.cat .best { grid-area: best; margin-top: 2px; color: var(--accent); font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+.cat .best b { color: inherit; }
+
+.src { margin: 10px 0 0; color: var(--muted); font-size: 0.82rem; }
+
+.about p { margin: 0 0 8px; color: var(--muted); font-size: 0.9rem; max-width: 60ch; }
+.about a { color: var(--accent); font-weight: 700; }
+
+.foot {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding-block: 14px calc(28px + var(--inset-bottom));
+  color: var(--muted);
+  font-size: 0.82rem;
+  border-top: 1px solid var(--line);
+}
+.foot p { margin: 0; }
+.foot .mail { color: var(--ink); user-select: all; overflow-wrap: anywhere; }
+
+/* ---------- Réglages : thème et langue ---------- */
+.prefs { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pref {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 4px 12px 4px 8px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pref .ico { width: 20px; height: 20px; }
+.seg { display: inline-flex; border: 1.5px solid var(--line); border-radius: 999px; overflow: hidden; }
+.seg-b { min-height: 33px; padding: 4px 12px; border: 0; background: transparent; color: var(--muted); font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+.seg-b[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.seg-b:focus-visible { outline-offset: -3px; }
+
+/* ---------- Accueil : tout tient sur un écran, les tuiles se partagent la hauteur restante ---------- */
+.app.home { height: 100%; min-height: 0; gap: clamp(8px, 2vh, 20px); padding-block: 12px calc(6px + var(--inset-bottom)); }
+.home .brand { gap: 2px; }
+.home .brand svg { max-width: clamp(104px, 20vh, 230px); }
+.home .brand h1 { font-size: clamp(1.5rem, 4.3vh, 2.15rem); }
+.home .tagline { font-size: clamp(0.85rem, 2.1vh, 1rem); }
+.tiles {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 1.6vh, 12px);
+}
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2px, 0.8vh, 8px);
+  min-height: 0;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .15s ease, transform .12s ease;
+}
+.tile:active { transform: scale(0.98); }
+@media (hover: hover) { .tile:hover { border-color: var(--accent); } }
+.tile .badge { width: clamp(38px, 7.4vh, 58px); height: clamp(38px, 7.4vh, 58px); border-radius: 28%; }
+.tile .ico { width: 58%; height: 58%; }
+.tile .name { font-weight: 700; font-size: clamp(0.95rem, 2.4vh, 1.1rem); line-height: 1.2; }
+.tile .he { color: var(--muted); font-size: clamp(0.85rem, 2.1vh, 1rem); line-height: 1.2; }
+.home-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 18px; }
+.home-links .link { margin: 0; padding: 6px 4px; font-size: 0.85rem; }
+/* écran très bas (téléphone couché) : l'accueil reprend un défilement normal */
+@media (max-height: 520px) {
+  .app.home { height: auto; }
+  .tiles { grid-template-rows: none; grid-auto-rows: minmax(96px, auto); }
+}
+
+.best-line { margin: 0; color: var(--muted); font-size: 0.9rem; }
+.best-line b { color: var(--ink); }
+
+/* ---------- Quiz ---------- */
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.link {
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font-weight: 700;
+  padding: 8px 4px;
+  margin-left: -4px;
+  cursor: pointer;
+}
+.topbar .cat-name { color: var(--muted); font-size: 0.9rem; text-align: right; min-width: 0; }
+.gauge { display: flex; justify-content: center; margin-top: -8px; }
+.gauge svg { width: 100%; max-width: 230px; height: auto; display: block; }
+.seg { fill: none; stroke-width: 12; stroke-linecap: round; transition: stroke .25s ease; }
+.seg.todo { stroke: var(--line); }
+.seg.cur { stroke: var(--accent); }
+.seg.good { stroke: var(--good); }
+.seg.bad { stroke: var(--bad); }
+.g-num { font-family: var(--f-display); font-size: 34px; font-weight: 700; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.g-sub { font-size: 10.5px; font-weight: 700; letter-spacing: 0.09em; fill: var(--muted); }
+
+.qhead { display: flex; flex-direction: column; gap: 10px; margin-top: -8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.chip.lvl-3 { background: var(--bad-soft); color: var(--bad); }
+.question {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.choices { display: flex; flex-direction: column; gap: 10px; }
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 58px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .15s ease, background .2s ease, opacity .2s ease;
+}
+.choice:hover:not(:disabled) { border-color: var(--accent); }
+.choice:disabled { cursor: default; color: var(--ink); }
+.choice .letter {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--f-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.choice .txt { min-width: 0; flex: 1; }
+.choice .mark { flex: none; font-weight: 700; font-size: 1.1rem; }
+.choice.correct { border-color: var(--good); background: var(--good-soft); }
+.choice.correct .letter { background: var(--good); color: var(--surface); }
+.choice.correct .mark { color: var(--good); }
+.choice.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.choice.wrong .letter { background: var(--bad); color: var(--surface); }
+.choice.wrong .mark { color: var(--bad); }
+.choice.dim { opacity: 0.5; }
+
+.feedback {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  animation: rise .25s ease both;
+}
+.feedback:empty { display: none; }
+.feedback p { margin: 0; }
+.verdict { font-weight: 700; }
+.verdict.ok { color: var(--good); }
+.verdict.ko { color: var(--bad); }
+.ref { color: var(--muted); font-size: 0.875rem; }
+.ref b { color: var(--ink); font-weight: 700; }
+
+.actions {
+  position: sticky;
+  bottom: 0;
+  margin-top: auto;
+  padding-block: 12px calc(16px + var(--inset-bottom));
+  background: linear-gradient(to top, var(--bg) 72%, transparent);
+}
+/* une simple consigne ne reste pas collée en bas : elle ne doit pas recouvrir les réponses */
+.actions.idle { position: static; background: none; }
+.hint { margin: 0; text-align: center; color: var(--muted); font-size: 0.9rem; padding-block: 14px; }
+
+
+/* ---------- Results ---------- */
+.result-head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+.result-head h2 { margin: 0; font-family: var(--f-display); font-size: 1.7rem; line-height: 1.2; text-wrap: balance; }
+.result-head p { margin: 0; color: var(--muted); max-width: 36ch; }
+.record { display: inline-block; margin-top: 4px; }
+.review { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.review li { display: grid; grid-template-columns: 28px minmax(0, 1fr); column-gap: 10px; padding: 12px 14px; border-top: 1px solid var(--line); }
+.review li:first-child { border-top: 0; }
+.review .st { font-weight: 700; font-size: 1.05rem; line-height: 1.4; }
+.review .st.ok { color: var(--good); }
+.review .st.ko { color: var(--bad); }
+.review .rq { margin: 0; font-size: 0.95rem; line-height: 1.4; }
+.review .ra { margin: 4px 0 0; font-size: 0.875rem; color: var(--muted); }
+.review .ra b { color: var(--ink); }
+.review .ra s { color: var(--bad); }
+.actions.stack { position: static; padding-bottom: calc(28px + var(--inset-bottom)); display: flex; flex-direction: column; gap: 10px; background: none; }
+
+@keyframes rise { from { transform: translateY(6px); opacity: .4; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+<link rel="stylesheet" href="jeux/jeux.css">
+
+</head>
+<body>
+<div id="app" class="app"></div>
+
+<script src="en/quiz.js"></script>
+<script src="en/jeux.js"></script>
+<script>
+const CATS = [
+  { id: "torah",  name: "Torah",               he: "תורה",            desc: "Les cinq livres de Moïse",
+    icon: '<path d="M4.5 20V10a3.75 3.75 0 0 1 7.5 0v10zM12 20V10a3.75 3.75 0 0 1 7.5 0v10z"/><path d="M7 12.5h2.5M7 15.5h2.5M14.5 12.5h2.5M14.5 15.5h2.5"/>' },
+  { id: "neviim", name: "Prophètes et Écrits", he: "נ״ך",   desc: "Nevi’im et Ketouvim",
+    icon: '<path d="M12 7c-1.9-1.4-4.2-2-7.5-2v12.5c3.3 0 5.6.6 7.5 2 1.9-1.4 4.2-2 7.5-2V5c-3.3 0-5.6.6-7.5 2z"/><path d="M12 7v12.5"/>' },
+  { id: "second", name: "Second Temple",       he: "בית שני",          desc: "La période intertestamentaire",
+    icon: '<path d="M3.5 9.5 12 4.5l8.5 5z"/><path d="M6 12v6M10 12v6M14 12v6M18 12v6"/><path d="M3.5 20.5h17"/>' },
+  { id: "fetes",  name: "Fêtes juives",        he: "מועדי ישראל",      desc: "Les fêtes d’Israël et leur sens",
+    icon: '<rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/><circle class="fill" cx="12" cy="15" r="1.6"/>' },
+  { id: "lois",   name: "Les sept lois",       he: "שבע מצוות",        desc: "Les lois noahides et leurs sources",
+    icon: '<path d="M12 4v16M8 20h8M5.5 7.5h13"/><path d="M5.5 7.5 3 13.5a2.7 2.7 0 0 0 5 0zM18.5 7.5 16 13.5a2.7 2.7 0 0 0 5 0z"/>' },
+  { id: "hebreu", name: "Hébreu biblique",     he: "לשון הקודש",       desc: "Mots et notions clés",
+    icon: '<text class="ico-he" x="12" y="18.5" text-anchor="middle">א</text>' }
+];
+const QUIZ_ICON = '<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.9 2.1c-.9.6-1.5 1.1-1.5 2.1"/><circle class="fill" cx="12" cy="16.5" r="1"/>';
+
+// a[0] is always the correct answer; choices are shuffled at play time.
+// The English text of each question is in www/en/quiz.js, in the same order.
+const Q = [
+  // ---------- Torah ----------
+  { c: "torah", l: 1, q: "Quel signe Dieu donne-t-il comme gage de son alliance avec Noé et toute créature vivante ?",
+    a: ["L’arc-en-ciel", "La circoncision", "Le chabbat", "Le rameau d’olivier"], r: "Genèse 9:12-13",
+    x: "« J’ai placé mon arc dans la nue » : l’arc-en-ciel (kéchet) est le signe d’une alliance conclue avec toute l’humanité, pas seulement avec Israël." },
+  { c: "torah", l: 1, q: "Combien de personnes entrent dans l’arche ?",
+    a: ["Huit", "Six", "Dix", "Douze"], r: "Genèse 7:13",
+    x: "Noé, sa femme, ses trois fils (Sem, Cham et Japhet) et leurs trois épouses." },
+  { c: "torah", l: 2, q: "Quel oiseau Noé lâche-t-il en premier à la fin du déluge ?",
+    a: ["Le corbeau", "La colombe", "L’aigle", "Le passereau"], r: "Genèse 8:6-12",
+    x: "Le corbeau va et vient jusqu’à ce que les eaux sèchent. La colombe n’est envoyée qu’ensuite, à trois reprises." },
+  { c: "torah", l: 1, q: "Sur quelles montagnes l’arche s’arrête-t-elle ?",
+    a: ["Les monts d’Ararat", "Le mont Sinaï", "Le mont Moriah", "Le mont Carmel"], r: "Genèse 8:4",
+    x: "Le septième mois, le dix-septième jour du mois." },
+  { c: "torah", l: 2, q: "Quel roi de Salem, « prêtre du Dieu Très-Haut », bénit Abram ?",
+    a: ["Melkhisédek", "Abimélekh", "Amraphel", "Balak"], r: "Genèse 14:18-20",
+    x: "Le Talmud (Nedarim 32b) identifie Melkhisédek à Sem, fils de Noé : un non-Israélite qui servait le Dieu unique." },
+  { c: "torah", l: 1, q: "Quel prêtre de Midian conseille à Moïse d’instituer des juges pour le peuple ?",
+    a: ["Jethro (Yitro)", "Balaam", "Aaron", "Caleb"], r: "Exode 18:13-26",
+    x: "La section de la Torah qui contient le don des Dix Paroles porte son nom : Yitro." },
+  { c: "torah", l: 1, q: "Quel devin non-israélite est engagé pour maudire Israël, mais finit par le bénir ?",
+    a: ["Balaam", "Jethro", "Og", "Sihon"], r: "Nombres 22–24",
+    x: "Balak, roi de Moab, fait appel à lui. Sa bénédiction « Qu’elles sont belles tes tentes, ô Jacob » (Nombres 24:5) est encore récitée à l’entrée de la synagogue." },
+  { c: "torah", l: 2, q: "De quelle ville Abram part-il avec son père Terah ?",
+    a: ["Ur des Chaldéens", "Ninive", "Babel", "Damas"], r: "Genèse 11:31 ; 12:1-4",
+    x: "Terah quitte Ur pour Canaan mais s’arrête à Haran. C’est de Haran qu’Abram part après l’appel « Lekh lekha »." },
+  { c: "torah", l: 1, q: "Où la construction d’une tour provoque-t-elle la confusion des langues ?",
+    a: ["Babel", "Sodome", "Ninive", "Jéricho"], r: "Genèse 11:1-9",
+    x: "Dans la plaine de Chinear. La Torah rapproche le nom Babel du verbe balal, « confondre »." },
+  { c: "torah", l: 1, q: "Quels sont les trois fils de Noé ?",
+    a: ["Sem, Cham et Japhet", "Caïn, Abel et Seth", "Isaac, Ismaël et Madian", "Ruben, Siméon et Lévi"], r: "Genèse 6:10 ; 9:19",
+    x: "« C’est par eux que toute la terre fut peuplée » : tous les peuples sont donc Benei Noah, fils de Noé." },
+
+  // ---------- Prophètes et Écrits ----------
+  { c: "neviim", l: 1, q: "Vers quelle grande ville non-juive le prophète Jonas est-il envoyé ?",
+    a: ["Ninive", "Babylone", "Tyr", "Damas"], r: "Jonas 1:2 ; 3:5-10",
+    x: "Les habitants de Ninive se repentent et la ville est épargnée. Le livre de Jonas est lu l’après-midi de Yom Kippour." },
+  { c: "neviim", l: 2, q: "Quel général araméen, guéri de la lèpre, déclare qu’il n’y a de Dieu qu’en Israël ?",
+    a: ["Naaman", "Hazaël", "Ben-Hadad", "Sisera"], r: "2 Rois 5:1-15",
+    x: "Après s’être plongé sept fois dans le Jourdain sur la parole d’Élisée, Naaman renonce aux autres dieux. Un modèle souvent cité pour les non-Juifs monothéistes." },
+  { c: "neviim", l: 1, q: "Quelle Moabite est l’arrière-grand-mère du roi David ?",
+    a: ["Ruth", "Orpa", "Noémi", "Rahab"], r: "Ruth 4:13-17",
+    x: "Ruth épouse Boaz ; leur fils Obed est le père d’Isaï, père de David. Le livre est lu à Chavouot." },
+  { c: "neviim", l: 2, q: "Quel prophète annonce : « Ma maison sera appelée maison de prière pour tous les peuples » ?",
+    a: ["Isaïe", "Jérémie", "Ézéchiel", "Amos"], r: "Isaïe 56:6-7",
+    x: "Le passage s’adresse aux « fils de l’étranger » qui s’attachent à l’Éternel." },
+  { c: "neviim", l: 2, q: "Quel prophète annonce : « En ce jour-là, l’Éternel sera un et son nom sera un » ?",
+    a: ["Zacharie", "Malachie", "Osée", "Joël"], r: "Zacharie 14:9",
+    x: "Ce verset conclut la prière du Alénou, récitée à la fin de chaque office." },
+  { c: "neviim", l: 1, q: "Quel roi perse autorise les exilés à rentrer et à rebâtir le Temple de Jérusalem ?",
+    a: ["Cyrus", "Nabuchodonosor", "Darius le Mède", "Assuérus"], r: "Esdras 1:1-3 ; Isaïe 45:1",
+    x: "Son édit date d’environ 538 av. EC. Isaïe l’appelle « son oint » (machia’h)." },
+  { c: "neviim", l: 2, q: "Dans quel livre le nom de Dieu n’apparaît-il jamais ?",
+    a: ["Esther", "Ruth", "Jonas", "Lamentations"], r: "Livre d’Esther ; Houlin 139b",
+    x: "La tradition y lit une présence cachée : le Talmud rapproche le nom d’Esther du verset « Je cacherai ma face » (Deutéronome 31:18)." },
+  { c: "neviim", l: 2, q: "Combien de livres compte la Bible hébraïque selon le décompte juif traditionnel ?",
+    a: ["24", "22", "39", "12"], r: "Baba Batra 14b (ordre des livres)",
+    x: "Même contenu que les 39 livres de certaines éditions, mais les douze petits prophètes forment un seul livre, comme Samuel, Rois, Chroniques et Esdras-Néhémie. Flavius Josèphe en comptait 22." },
+  { c: "neviim", l: 1, q: "Quelle reine vient éprouver Salomon par des énigmes ?",
+    a: ["La reine de Saba", "Jézabel", "Vashti", "Athalie"], r: "1 Rois 10:1-13",
+    x: "Impressionnée par sa sagesse, elle loue l’Éternel, le Dieu de Salomon (1 Rois 10:9)." },
+  { c: "neviim", l: 2, q: "En quelle langue sont rédigés une partie du livre de Daniel et une partie d’Esdras ?",
+    a: ["L’araméen", "Le grec", "Le perse", "L’akkadien"], r: "Daniel 2:4–7:28 ; Esdras 4:8–6:18",
+    x: "L’araméen était la langue administrative de l’empire perse et la langue courante des Juifs après l’exil." },
+
+  // ---------- Second Temple ----------
+  { c: "second", l: 2, q: "Selon la Mishna, à qui les derniers prophètes transmettent-ils la Torah ?",
+    a: ["Aux hommes de la Grande Assemblée", "Aux Maccabées", "Aux Esséniens", "Au Sanhédrin d’Hérode"], r: "Pirké Avot 1:1",
+    x: "La Grande Assemblée (Anché Knesset HaGuedola), active au début de l’époque perse, fait le lien entre les prophètes et les sages." },
+  { c: "second", l: 1, q: "Quel conquérant fait passer la Judée sous domination grecque vers 332 av. EC ?",
+    a: ["Alexandre le Grand", "Antiochos III", "Ptolémée Ier", "Pompée"], r: "Josèphe, Antiquités juives XI, 8",
+    x: "À sa mort en 323 av. EC, son empire est partagé : la Judée passe d’abord aux Ptolémées d’Égypte, puis aux Séleucides de Syrie vers 200 av. EC." },
+  { c: "second", l: 1, q: "Quelle traduction grecque de la Torah est réalisée à Alexandrie au IIIe siècle av. EC ?",
+    a: ["La Septante", "Le Targoum Onkelos", "La Vulgate", "La Peshitta"], r: "Lettre d’Aristée ; Meguila 9a",
+    x: "Le Talmud raconte que Ptolémée réunit 72 sages dans 72 maisons séparées, et qu’ils produisirent tous la même traduction." },
+  { c: "second", l: 1, q: "Quel roi séleucide interdit la pratique du judaïsme vers 167 av. EC ?",
+    a: ["Antiochos IV Épiphane", "Alexandre le Grand", "Ptolémée II", "Hérode le Grand"], r: "1 Maccabées 1:41-64",
+    x: "Il fait installer un culte païen dans le Temple. Sa politique déclenche la révolte des Maccabées." },
+  { c: "second", l: 1, q: "Quel prêtre établi à Modiïn, père de Judas Maccabée, lance la révolte ?",
+    a: ["Mattathias (Matityahou)", "Jean Hyrcan", "Éléazar", "Simon le Juste"], r: "1 Maccabées 2:1-28",
+    x: "Il refuse de sacrifier aux idoles et se réfugie dans les montagnes avec ses cinq fils." },
+  { c: "second", l: 1, q: "Quelle fête commémore la nouvelle dédicace du Temple par les Maccabées ?",
+    a: ["Hanoukka", "Pourim", "Soukkot", "Tou Bichvat"], r: "1 Maccabées 4:52-59 ; Chabbat 21b",
+    x: "Le 25 Kislev, vers 164 av. EC. Les livres des Maccabées ne font pas partie de la Bible hébraïque ; le Talmud rapporte le miracle de la fiole d’huile." },
+  { c: "second", l: 2, q: "Comment s’appelle la dynastie issue des Maccabées, qui règne sur la Judée jusqu’en 37 av. EC ?",
+    a: ["Les Hasmonéens", "Les Hérodiens", "Les Séleucides", "Les Lagides"], r: "Josèphe, Antiquités juives XII–XIV",
+    x: "Le nom viendrait d’un ancêtre de Mattathias, Hasmonée. La dynastie prend fin quand Hérode, soutenu par Rome, prend Jérusalem." },
+  { c: "second", l: 2, q: "Quel général romain entre dans Jérusalem en 63 av. EC ?",
+    a: ["Pompée", "Titus", "Jules César", "Vespasien"], r: "Josèphe, Antiquités juives XIV, 4",
+    x: "Appelé à arbitrer entre les frères hasmonéens Hyrcan II et Aristobule II, il place la Judée sous tutelle romaine." },
+  { c: "second", l: 2, q: "Quel est le seul livre biblique conservé en entier parmi les manuscrits de la mer Morte ?",
+    a: ["Isaïe", "La Genèse", "Les Psaumes", "Daniel"], r: "Grand rouleau d’Isaïe (1QIsaᵃ)",
+    x: "Copié au IIe siècle av. EC et découvert en 1947 dans une grotte de Qumrân, il a plus de mille ans de plus que le Codex d’Alep." },
+  { c: "second", l: 3, q: "Quel sage de Jérusalem écrit vers 180 av. EC un livre de sagesse que le Talmud cite parfois ?",
+    a: ["Ben Sira", "Philon d’Alexandrie", "Flavius Josèphe", "Hillel l’Ancien"], r: "Haguiga 13a",
+    x: "Écrit en hébreu, le livre n’est pas entré dans le Tanakh mais a été conservé en grec. Des fragments hébreux ont été retrouvés dans la Guenizah du Caire et à Massada." },
+
+  // ---------- Fêtes juives ----------
+  { c: "fetes", l: 1, q: "Quel instrument fait-on sonner à Roch Hachana ?",
+    a: ["Le chofar", "Les trompettes d’argent", "La harpe", "Le tambourin"], r: "Lévitique 23:24 ; Roch Hachana 16a",
+    x: "La Torah appelle ce jour « jour de sonnerie » (Yom Terou’a). On utilise de préférence une corne de bélier, en souvenir du bélier offert à la place d’Isaac." },
+  { c: "fetes", l: 2, q: "Roch Hachana, le Nouvel An juif, tombe le premier jour de quel mois ?",
+    a: ["Tichri", "Nissan", "Elloul", "Kislev"], r: "Lévitique 23:24",
+    x: "La Torah l’appelle « le septième mois » : les mois se comptent à partir de Nissan, le mois de la sortie d’Égypte, mais le compte des années change en Tichri." },
+  { c: "fetes", l: 1, q: "Combien de temps dure le jeûne de Yom Kippour ?",
+    a: ["Environ 25 heures", "12 heures", "Trois jours", "Une semaine"], r: "Lévitique 23:27-32",
+    x: "La Torah le fixe d’un soir au soir suivant. Il commence avant le coucher du soleil et se termine à la tombée de la nuit le lendemain." },
+  { c: "fetes", l: 1, q: "Pendant Soukkot, on habite sept jours dans une cabane. En souvenir de quoi ?",
+    a: ["Des abris d’Israël dans le désert", "De l’exil à Babylone", "De l’arche de Noé", "De la construction du Temple"], r: "Lévitique 23:42-43",
+    x: "Chaque génération se rappelle ainsi qu’Israël a vécu sous des abris provisoires après la sortie d’Égypte." },
+  { c: "fetes", l: 3, q: "Selon le Talmud, que représentent les 70 taureaux offerts au Temple pendant Soukkot ?",
+    a: ["Les soixante-dix nations du monde", "Les soixante-dix anciens d’Israël", "Les soixante-dix années de l’exil", "Les soixante-dix ans d’une vie humaine"], r: "Nombres 29:12-34 ; Soukka 55b",
+    x: "De 13 taureaux le premier jour à 7 le septième, soit 70 en tout, offerts pour l’ensemble des peuples. Zacharie annonce que les nations monteront à Jérusalem pour fêter Soukkot (Zacharie 14:16)." },
+  { c: "fetes", l: 1, q: "Quel aliment est interdit pendant Pessa’h ?",
+    a: ["Le pain levé (hamets)", "La viande", "Le vin", "Le sel"], r: "Exode 12:15-20, 39",
+    x: "On mange la matsa, du pain non levé : à la sortie d’Égypte, la pâte n’avait pas eu le temps de lever." },
+  { c: "fetes", l: 1, q: "Quel événement la tradition associe-t-elle à Chavouot ?",
+    a: ["Le don de la Torah au Sinaï", "La sortie d’Égypte", "La dédicace du Temple", "La traversée du Jourdain"], r: "Exode 19:1 ; Chabbat 86b",
+    x: "La Torah en fait la fête des prémices, sept semaines après Pessa’h. La tradition y célèbre le don de la Torah, et on y lit le livre de Ruth." },
+  { c: "fetes", l: 1, q: "Quel livre lit-on à Pourim ?",
+    a: ["Le rouleau d’Esther", "Le livre de Ruth", "Les Lamentations", "Le Cantique des Cantiques"], r: "Esther 3:7 ; 9:20-28",
+    x: "Pourim célèbre le salut des Juifs de l’empire perse face au complot d’Haman. Son nom vient de « pour », le sort qu’Haman avait tiré." },
+  { c: "fetes", l: 2, q: "Selon la Mishna, Tou Bichvat est le nouvel an de quoi ?",
+    a: ["Des arbres", "Des rois", "Du bétail", "Des fêtes"], r: "Mishna Roch Hachana 1:1",
+    x: "La Mishna compte quatre débuts d’année. Celui des arbres, le 15 Chevat, sert à calculer les dîmes sur les fruits." },
+  { c: "fetes", l: 2, q: "Quel jeûne rappelle la destruction des deux Temples de Jérusalem ?",
+    a: ["Le 9 Av (Tichea Béav)", "Yom Kippour", "Le jeûne d’Esther", "Le jeûne de Guedalia"], r: "Mishna Taanit 4:6",
+    x: "Selon la Mishna, le Premier et le Second Temple ont été détruits à cette même date. On y lit le livre des Lamentations." },
+
+  // ---------- Les sept lois ----------
+  { c: "lois", l: 1, q: "Combien de commandements la tradition rabbinique donne-t-elle aux descendants de Noé ?",
+    a: ["Sept", "Dix", "Treize", "Six cent treize"], r: "Sanhédrin 56a",
+    x: "Établir des tribunaux, et s’abstenir du blasphème, de l’idolâtrie, des unions interdites, du meurtre, du vol et de la chair d’un animal vivant." },
+  { c: "lois", l: 2, q: "Dans quel traité du Talmud les sept lois sont-elles énumérées et discutées ?",
+    a: ["Sanhédrin", "Berakhot", "Chabbat", "Pessa’him"], r: "Sanhédrin 56a–60a",
+    x: "Ce traité porte sur les tribunaux et le droit pénal. Les sept lois y sont discutées sur plusieurs pages." },
+  { c: "lois", l: 2, q: "Laquelle des sept lois est une obligation active plutôt qu’une interdiction ?",
+    a: ["Établir des tribunaux (Dinim)", "Ne pas voler (Guézel)", "Ne pas blasphémer", "Ne pas pratiquer l’idolâtrie"], r: "Maïmonide, Lois des rois 9:14",
+    x: "Chaque société doit instituer des juges pour faire respecter les six autres lois. Les décisionnaires débattent de sa portée exacte." },
+  { c: "lois", l: 1, q: "Que désigne l’interdit appelé « ever min ha-’haï » ?",
+    a: ["Manger un membre arraché à un animal vivant", "Consommer le sang des poissons", "Chasser pour le plaisir", "Manger de la viande le chabbat"], r: "Genèse 9:4",
+    x: "Après le déluge, la viande est permise à Noé, mais pas la chair prélevée sur un animal encore en vie." },
+  { c: "lois", l: 2, q: "Selon Maïmonide, quelle loi Noé reçoit-il en plus des six données à Adam ?",
+    a: ["L’interdit du membre d’un animal vivant", "L’interdit du meurtre", "L’obligation d’établir des tribunaux", "L’interdit du vol"], r: "Maïmonide, Lois des rois 9:1",
+    x: "La viande n’était pas permise à Adam. Quand elle l’est pour Noé, l’interdit du membre d’un animal vivant s’ajoute." },
+  { c: "lois", l: 3, q: "De quel verset le Talmud dérive-t-il l’ensemble des sept lois ?",
+    a: ["Genèse 2:16", "Genèse 9:1", "Exode 20:2", "Deutéronome 6:4"], r: "Sanhédrin 56b",
+    x: "« L’Éternel Dieu donna un ordre à l’homme, disant : De tout arbre du jardin tu peux manger. » Rabbi Yo’hanan rattache chaque mot du verset à l’une des lois." },
+  { c: "lois", l: 2, q: "Que désigne l’expression « Birkat HaChem » dans la liste des sept lois ?",
+    a: ["L’interdit du blasphème", "La bénédiction avant le repas", "La prière du matin", "Le serment devant un tribunal"], r: "Sanhédrin 56a",
+    x: "Littéralement « bénir le Nom » : un euphémisme employé par respect pour désigner le fait de maudire Dieu." },
+  { c: "lois", l: 1, q: "Quel verset donné à Noé fonde l’interdit du meurtre ?",
+    a: ["« Qui verse le sang de l’homme, par l’homme son sang sera versé »", "« Croissez et multipliez »", "« Tu aimeras ton prochain comme toi-même »", "« Écoute, Israël »"], r: "Genèse 9:6",
+    x: "Le verset poursuit : « car l’homme a été fait à l’image de Dieu ». Chaque vie humaine porte cette image." },
+  { c: "lois", l: 2, q: "Comment Maïmonide appelle-t-il le non-Juif qui observe les sept lois parce que Dieu les a ordonnées ?",
+    a: ["Un pieux des nations du monde", "Un prosélyte (guer tsédek)", "Un Lévite", "Un nazir"], r: "Maïmonide, Lois des rois 8:11",
+    x: "Il est compté parmi les ’hassidé oumot ha-olam et a part au monde futur." },
+  { c: "lois", l: 1, q: "L’interdit du « guézel » concerne :",
+    a: ["Le vol", "Le mensonge", "La médisance", "Le travail le chabbat"], r: "Sanhédrin 57a ; Lois des rois 9:9",
+    x: "Il couvre le vol, le brigandage et toute appropriation injuste du bien d’autrui, même de très faible valeur." },
+
+  // ---------- Hébreu biblique ----------
+  { c: "hebreu", l: 1, q: "Que signifie « Béréchit », le premier mot de la Torah ?",
+    a: ["Au commencement", "Au nom de Dieu", "Voici les générations", "Et Dieu dit"], r: "Genèse 1:1",
+    x: "Le premier livre porte ce nom : en hébreu, chaque livre de la Torah est nommé d’après l’un de ses premiers mots." },
+  { c: "hebreu", l: 1, q: "Que signifie le mot hébreu « kéchet » ?",
+    a: ["Arc (et arc-en-ciel)", "Alliance", "Déluge", "Colombe"], r: "Genèse 9:13",
+    x: "Le même mot désigne l’arc du chasseur et l’arc-en-ciel. Alliance se dit berit, déluge maboul, colombe yona." },
+  { c: "hebreu", l: 1, q: "Tanakh est un acronyme. Que désignent ses trois lettres ?",
+    a: ["Torah, Nevi’im, Ketouvim", "Talmud, Nevi’im, Kabbale", "Torah, Néhémie, Kohélet", "Tefila, Nedarim, Ketoubot"],
+    r: "Tanakh",
+    x: "L’Enseignement, les Prophètes et les Écrits : les trois parties de la Bible hébraïque." },
+  { c: "hebreu", l: 1, q: "Combien de lettres compte l’alphabet hébreu ?",
+    a: ["22", "26", "24", "28"], r: "Psaume 119",
+    x: "Cinq d’entre elles ont en plus une forme finale. Le Psaume 119 compte 22 strophes, une par lettre." },
+  { c: "hebreu", l: 1, q: "Que signifie « Chema », premier mot de la profession de foi juive ?",
+    a: ["Écoute", "Paix", "Loue", "Souviens-toi"], r: "Deutéronome 6:4",
+    x: "« Écoute, Israël : l’Éternel est notre Dieu, l’Éternel est un. » L’unicité de Dieu est aussi au cœur de la foi des Benei Noah." },
+  { c: "hebreu", l: 1, q: "Que veut dire « Benei Noah » ?",
+    a: ["Les fils de Noé", "Les justes de Noé", "Le peuple de l’arche", "Les nouveaux croyants"], r: "Genèse 9:19",
+    x: "Toute l’humanité descend de Noé. Le terme désigne en particulier les non-Juifs qui s’engagent à observer les sept lois." },
+  { c: "hebreu", l: 2, q: "Que signifie « émet » ?",
+    a: ["Vérité", "Mère", "Foi", "Vie"], r: "Chabbat 55a",
+    x: "Le Talmud l’appelle le sceau du Saint, béni soit-Il. Ses lettres (alef, mem, tav) ouvrent, occupent le milieu et ferment l’alphabet." },
+  { c: "hebreu", l: 1, q: "« Hallelou-Yah » signifie :",
+    a: ["Louez Yah (l’Éternel)", "Dieu est grand", "Ainsi soit-il", "Béni soit-il"], r: "Psaumes 146–150",
+    x: "Yah est une forme abrégée du nom divin. L’expression ouvre et ferme chacun des cinq derniers psaumes." },
+  { c: "hebreu", l: 2, q: "Que signifie la racine de « tsédaka », souvent traduit par « charité » ?",
+    a: ["Justice", "Pitié", "Offrande", "Pardon"], r: "Deutéronome 16:20",
+    x: "« Tsédek, tsédek tirdof » : c’est la justice que tu poursuivras. Aider le pauvre relève du devoir de justice plus que de la générosité." },
+  { c: "hebreu", l: 2, q: "Que signifie « Torah » au sens premier ?",
+    a: ["Enseignement", "Code pénal", "Rouleau", "Livre saint"], r: "Racine yod-rèch-hé",
+    x: "Le mot vient d’une racine qui signifie « instruire, indiquer la direction ». Le traduire seulement par « Loi » est réducteur." }
+];
+
+const LETTERS = ["א", "ב", "ג", "ד"];
+const PER_ROUND = 10;
+const APP_VERSION = "1.3.0";
+const CONTACT = "les.benei.noah@gmail.com";
+const SITE = "https://jimdmb.github.io/quiz-benei-noah/";
+const $app = document.getElementById("app");
+let state = { screen: "home" };
+
+/* ---------- Langue et thème ---------- */
+// Réglages gardés sur l'appareil
+const prefs = {
+  get(k) { try { return localStorage.getItem("bnq-" + k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem("bnq-" + k, v); } catch (e) {} }
+};
+let lang = prefs.get("lang") === "fr" ? "fr" : "en";   // l'anglais est la langue par défaut
+const THEMES = ["auto", "light", "dark"];              // auto : suit le réglage du téléphone
+let theme = THEMES.includes(prefs.get("theme")) ? prefs.get("theme") : "auto";
+
+// T("texte français", "English text") : le texte dans la langue en cours
+const T = (f, e) => lang === "en" ? e : f;
+// L(donnée) : la donnée, avec ses champs anglais (rangés dans `en`) quand l'app est en anglais
+const L = o => lang === "en" && o.en ? { ...o, ...o.en } : o;
+
+// Contenu anglais du quiz (www/en/quiz.js), rattaché à chaque thème et à chaque question
+CATS.forEach(c => { c.en = CATS_EN[c.id]; });
+Q.forEach((q, i) => { q.en = Q_EN[i]; });
+
+function applyPrefs() {
+  const root = document.documentElement;
+  root.lang = lang;
+  if (theme === "auto") root.removeAttribute("data-theme");
+  else root.dataset.theme = theme;
+  document.title = T("Quiz Benei Noah", "Bnei Noah Quiz");
+  // Dans l'app Android, les barres du système suivent le thème choisi : icônes claires sur fond sombre,
+  // et fond de la fenêtre de la couleur de la page (visible derrière les barres sur les anciennes WebView).
+  const native = window.Capacitor?.Plugins;
+  native?.SystemBars?.setStyle({ style: theme === "dark" ? "DARK" : theme === "light" ? "LIGHT" : "DEFAULT" })?.catch?.(() => {});
+  native?.AppTheme?.setBackground({ color: getComputedStyle(root).getPropertyValue("--bg").trim() })?.catch?.(() => {});
+}
+applyPrefs();
+// en thème automatique, le passage du téléphone en mode sombre ou clair met aussi les barres à jour
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyPrefs);
+
+function setLang(l) {
+  lang = l;
+  prefs.set("lang", l);
+  applyPrefs();
+  render("lang-" + l);
+}
+function nextTheme() {
+  theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
+  prefs.set("theme", theme);
+  applyPrefs();
+  render("theme");
+}
+
+// Icône au trait (grille de 24) pour les tuiles et les listes
+const ico = d => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+const THEME_ICON = {
+  auto: '<circle cx="12" cy="12" r="8.2"/><path class="fill" d="M12 3.8a8.2 8.2 0 0 1 0 16.4z"/>',
+  light: '<circle cx="12" cy="12" r="3.8"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/>',
+  dark: '<path d="M19.6 14.4A8 8 0 0 1 9.6 4.4a8 8 0 1 0 10 10z"/>'
+};
+
+/* ---------- Version web : installation sur l'écran d'accueil ---------- */
+const PLAY_URL = "";   // lien Google Play, à renseigner quand l'app y sera publique
+const IS_APP = !!window.Capacitor?.isNativePlatform?.();   // vrai dans l'app Android
+const IS_IOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+let installed = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+let installPrompt = null;   // proposé par Chrome et Edge quand l'installation est possible
+
+if (!IS_APP) {
+  const refresh = () => { if (state.screen === "home" || state.screen === "about") render(); };
+  window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installPrompt = e; refresh(); });
+  window.addEventListener("appinstalled", () => { installed = true; installPrompt = null; refresh(); });
+  // le service worker (créé à la publication du site) garde l'app disponible hors ligne
+  if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+}
+
+// Propose l'installation quand le navigateur le permet ; sinon ouvre « À propos », qui explique comment faire
+async function install() {
+  if (!installPrompt) { go("about"); return; }
+  installPrompt.prompt();
+  await installPrompt.userChoice;
+  installPrompt = null;
+  render();
+}
+
+// Typographie française : espace fine insécable avant ? ! : ; » et après « (sans effet en anglais)
+const fr = s => lang === "fr" ? s.replace(/ ([?!:;»])/g, " $1").replace(/« /g, "« ") : s;
+const shuffle = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const catName = id => id === "mix" ? T("Mélange", "Mix") : L(CATS.find(c => c.id === id)).name;
+const lvlName = l => [T("Facile", "Easy"), T("Moyen", "Medium"), T("Expert", "Expert")][l - 1];
+
+// Textes communs au quiz et aux jeux
+const TXT = {
+  get source() { return fr(T("Source : ", "Source: ")); },
+  get notQuite() { return T("Pas tout à fait. La réponse : ", "Not quite. The answer: "); },
+  get seeScore() { return T("Voir mon score", "See my score"); },
+  get answers() { return T("Réponses", "Answers"); },
+  get best() { return T("Record", "Best"); },
+  get newBest() { return T("Nouveau record", "New best"); },
+  get quit() { return T("‹ Quitter", "‹ Quit"); },
+  points: n => `${n} point${n > 1 || (lang === "en" && n !== 1) ? "s" : ""}`
+};
+
+function loadBest() { try { return JSON.parse(localStorage.getItem("bnq-best") || "{}") || {}; } catch (e) { return {}; } }
+function saveBest(b) { try { localStorage.setItem("bnq-best", JSON.stringify(b)); } catch (e) {} }
+
+/* ---------- Jeux ---------- */
+// Chaque fichier de www/jeux/ ajoute son jeu à GAMES :
+// { id, name, he, tint, icon, best(v), start() → état, render(état) → HTML, act(action, élément, état, événement), key?(événement, état) }
+// Les textes anglais des jeux sont dans www/en/jeux.js.
+const GAMES = [];
+const gameOf = id => GAMES.find(g => g.id === id);
+
+function startGame(id) {
+  state = { screen: "game", game: id, g: gameOf(id).start() };
+  window.scrollTo(0, 0);
+  render();
+}
+
+// Enregistre le record d'un jeu (lower : le plus petit score gagne). Renvoie true si le record est battu.
+function saveGameBest(id, value, lower = false) {
+  const best = loadBest(), key = "jeu-" + id, old = best[key];
+  const better = old == null || (lower ? value < old : value > old);
+  if (better) { best[key] = value; saveBest(best); }
+  return better;
+}
+
+const praise = ratio =>
+  ratio === 1 ? T("Parfait. Kol hakavod !", "Perfect. Kol hakavod!") :
+  ratio >= 0.8 ? T("Très beau résultat", "Great result") :
+  ratio >= 0.5 ? T("Bonne base", "A good start") : T("Chaque erreur apprend quelque chose", "Every mistake teaches something");
+
+const gameTop = (game, right = "") => `
+    <div class="topbar">
+      <button class="link" data-home id="quit">${TXT.quit}</button>
+      <span class="cat-name">${game.name}${right ? " · " + right : ""}</span>
+    </div>`;
+
+// Écran de fin commun : jauge, message, record, détail (body) et boutons.
+function gameEnd(game, { states, big, sub, title, text = "", record, body = "" }) {
+  const best = loadBest()["jeu-" + game.id];
+  return `
+    <div class="topbar">
+      <button class="link" data-home id="back">${T("‹ Accueil", "‹ Home")}</button>
+      <span class="cat-name">${game.name}</span>
+    </div>
+    <div class="result-head">
+      <div class="gauge">${gauge(states, big, sub)}</div>
+      <h2>${fr(title)}</h2>
+      ${text ? `<p>${fr(text)}</p>` : ""}
+      ${record ? `<span class="chip record">${TXT.newBest}</span>` : best != null ? `<p class="best-line">${game.best(best)}</p>` : ""}
+    </div>
+    ${body}
+    <div class="actions stack">
+      <button class="btn" data-replay id="replay">${T("Rejouer", "Play again")}</button>
+      <button class="btn ghost" data-home id="home">${T("Retour à l’accueil", "Back to home")}</button>
+    </div>`;
+}
+
+/* ---------- SVG arcs ---------- */
+const CX = 120, CY = 122;
+const pt = (r, t) => `${(CX + r * Math.cos(t)).toFixed(2)} ${(CY - r * Math.sin(t)).toFixed(2)}`;
+
+function heroArc() {
+  let bands = "";
+  for (let i = 0; i < 7; i++) {
+    const r = 110 - i * 9.5;
+    bands += `<path class="band" style="stroke:var(--k${i + 1})" d="M ${pt(r, Math.PI)} A ${r} ${r} 0 0 1 ${pt(r, 0)}"/>`;
+  }
+  return `<svg viewBox="0 0 240 126" role="img" aria-label="${T("Arc-en-ciel de sept bandes, signe de l’alliance avec Noé", "Rainbow of seven bands, the sign of the covenant with Noah")}">
+    ${bands}<text class="hero-he" x="${CX}" y="${CY - 6}" text-anchor="middle">בני נח</text></svg>`;
+}
+
+function gauge(states, big, sub) {
+  const n = states.length, r = 100, sw = 12;
+  const slot = Math.PI / n, cap = (sw / 2) / r, gap = 0.035;
+  let segs = "";
+  states.forEach((s, i) => {
+    const t1 = Math.PI - i * slot - cap - gap / 2;
+    const t2 = Math.PI - (i + 1) * slot + cap + gap / 2;
+    segs += `<path class="seg ${s}" d="M ${pt(r, t1)} A ${r} ${r} 0 0 1 ${pt(r, t2)}"/>`;
+  });
+  return `<svg viewBox="0 0 240 130" aria-hidden="true">${segs}
+    <text class="g-num" x="${CX}" y="${CY - 22}" text-anchor="middle">${big}</text>
+    <text class="g-sub" x="${CX}" y="${CY - 4}" text-anchor="middle">${sub.toUpperCase()}</text></svg>`;
+}
+
+/* ---------- Screens ---------- */
+// Accueil : réglages (thème, langue), puis une tuile par jeu, le quiz en premier
+function renderHome() {
+  const themeName = { auto: "Auto", light: T("Clair", "Light"), dark: T("Sombre", "Dark") }[theme];
+  $app.innerHTML = `
+    <div class="prefs">
+      <button class="pref" data-theme-next id="theme" aria-label="${T("Thème", "Theme")} : ${themeName}">${ico(THEME_ICON[theme])}<span>${themeName}</span></button>
+      <div class="seg" role="group" aria-label="Language / Langue">
+        <button class="seg-b" data-lang="en" id="lang-en" lang="en" aria-pressed="${lang === "en"}">English</button>
+        <button class="seg-b" data-lang="fr" id="lang-fr" lang="fr" aria-pressed="${lang === "fr"}">Français</button>
+      </div>
+    </div>
+
+    <header class="brand">
+      ${heroArc()}
+      <h1>${T("Quiz Benei Noah", "Bnei Noah Quiz")}</h1>
+      <p class="tagline">${T("Quiz et jeux bibliques pour les Benei Noah", "Bible quiz and games for the Bnei Noah")}</p>
+    </header>
+
+    <div class="tiles" role="group" aria-label="${T("Jeux", "Games")}">
+      <button class="tile" data-themes id="jeu-quiz">
+        <span class="badge">${ico(QUIZ_ICON)}</span>
+        <span class="name">Quiz</span>
+        <span class="he" lang="he">חידון</span>
+      </button>
+      ${GAMES.map(g => `
+      <button class="tile" data-game="${g.id}" id="jeu-${g.id}">
+        <span class="badge tint" style="--tint: var(--k${g.tint})">${ico(g.icon)}</span>
+        <span class="name">${g.name}</span>
+        <span class="he" lang="he">${g.he}</span>
+      </button>`).join("")}
+    </div>
+
+    <nav class="home-links">
+      ${IS_APP || installed ? "" : `<button class="link" data-install id="install">${T("Installer", "Install")}</button>`}
+      <button class="link" data-about id="about">${T("À propos et confidentialité", "About and privacy")}</button>
+    </nav>`;
+}
+
+// À propos : installation de la version web, confidentialité, version, contact, licences
+function renderAbout() {
+  const help = fr(IS_IOS
+    ? T("Sur iPhone ou iPad : dans Safari, touchez le bouton Partager, puis « Sur l’écran d’accueil ».",
+        "On iPhone or iPad: in Safari, tap the Share button, then “Add to Home Screen”.")
+    : T("Ouvrez le menu de votre navigateur, puis choisissez « Installer l’application » ou « Ajouter à l’écran d’accueil ».",
+        "Open your browser’s menu, then choose “Install app” or “Add to Home screen”."));
+  $app.innerHTML = `
+    <div class="topbar">
+      <button class="link" data-home id="back">${T("‹ Accueil", "‹ Home")}</button>
+      <span class="cat-name">${T("Quiz Benei Noah", "Bnei Noah Quiz")}</span>
+    </div>
+
+    <div class="qhead">
+      <h2 class="question" tabindex="-1" id="q-text">${T("À propos", "About")}</h2>
+      <p class="g-help">${fr(T(
+        "Un quiz et des jeux sur la Torah, les Prophètes, le Second Temple, les fêtes juives et les sept lois noahides. Chaque réponse cite sa source.",
+        "A quiz and games on the Torah, the Prophets, the Second Temple, the Jewish festivals and the seven Noahide laws. Every answer cites its source."))}</p>
+    </div>
+
+    ${IS_APP || installed ? "" : `
+    <section class="about" id="install-help">
+      <h2 class="label">${T("Installer l’application", "Install the app")}</h2>
+      <p>${T("Ajoutez le quiz à l’écran d’accueil de ce téléphone : il s’ouvre comme une application et fonctionne sans connexion.",
+             "Add the quiz to this phone’s home screen: it opens like an app and works offline.")}</p>
+      ${installPrompt ? `<button class="btn" data-install id="install">${T("Installer", "Install")}</button>` : `<p>${help}</p>`}
+      ${PLAY_URL ? `<p><a href="${PLAY_URL}">${T("Aussi disponible sur Google Play", "Also available on Google Play")}</a></p>` : ""}
+    </section>`}
+
+    <section class="about">
+      <h2 class="label">${T("Confidentialité", "Privacy")}</h2>
+      <p>${fr(T(
+        "L’app ne collecte aucune donnée : pas de compte, pas de publicité, rien n’est envoyé sur Internet. Vos records et votre progression restent sur cet appareil ; ils sont effacés si vous désinstallez l’app.",
+        "The app collects no data: no account, no ads, nothing is sent over the Internet. Your best scores and progress stay on this device; they are erased if you uninstall the app."))}</p>
+      <p><a href="${SITE + T("confidentialite.html", "privacy.html")}" id="privacy-link">${T("Politique de confidentialité complète", "Full privacy policy")}</a></p>
+    </section>
+
+    <footer class="foot">
+      <p>${fr(T("Version " + APP_VERSION + ". Une erreur dans une question ? Écrivez à ", "Version " + APP_VERSION + ". Found a mistake in a question? Write to "))}<span class="mail">${CONTACT}</span>.</p>
+      <p>${T("Polices Frank Ruhl Libre et Atkinson Hyperlegible, sous licence SIL Open Font License 1.1.", "Fonts: Frank Ruhl Libre and Atkinson Hyperlegible, under the SIL Open Font License 1.1.")}</p>
+    </footer>`;
+}
+
+// Écran du quiz : dix questions au hasard, ou un thème au choix
+function renderThemes() {
+  const best = loadBest();
+  const rec = id => best[id] != null ? `<span class="best">${TXT.best} <b>${best[id]}/${PER_ROUND}</b></span>` : "";
+  $app.innerHTML = `
+    <div class="topbar">
+      <button class="link" data-home id="back">${T("‹ Jeux", "‹ Games")}</button>
+      <span class="cat-name">Quiz</span>
+    </div>
+
+    <div class="qhead">
+      <h2 class="question" tabindex="-1" id="q-text">${T("Choisissez un thème", "Choose a theme")}</h2>
+      <p class="g-help">${T("Dix questions par partie. Chaque réponse est expliquée, avec sa source.", "Ten questions per round. Every answer is explained, with its source.")}</p>
+    </div>
+
+    <button class="btn" data-start="mix" id="start-mix">
+      <span>${T("10 questions au hasard", "10 random questions")}</span>
+      <small>${T("Tous les thèmes", "All themes")} · ${best.mix != null ? `${TXT.best.toLowerCase()} ${best.mix}/${PER_ROUND}` : `${Q.length} questions`}</small>
+    </button>
+
+    <div class="cats themes">
+      ${CATS.map(cat => {
+        const c = L(cat);
+        return `
+        <button class="cat" data-start="${c.id}" id="cat-${c.id}">
+          <span class="badge">${ico(c.icon)}</span>
+          <span class="name">${c.name}</span>
+          <span class="he" lang="he">${c.he}</span>
+          <span class="desc">${c.desc}</span>
+          ${rec(c.id)}
+        </button>`;
+      }).join("")}
+    </div>`;
+}
+
+function renderQuiz() {
+  const s = state, n = s.list.length;
+  const q = L(Q[s.list[s.idx]]), order = s.orders[s.idx], pick = s.picks[s.idx];
+  const answered = pick != null;
+  const score = s.picks.filter(p => p === 0).length;
+  const segs = s.list.map((_, i) => {
+    if (i < s.idx) return s.picks[i] === 0 ? "good" : "bad";
+    if (i === s.idx) return answered ? (pick === 0 ? "good" : "bad") : "cur";
+    return "todo";
+  });
+  const last = s.idx === n - 1;
+
+  $app.innerHTML = `
+    <div class="topbar">
+      <button class="link" data-themes id="quit">${TXT.quit}</button>
+      <span class="cat-name">${catName(s.cat)} · score <b>${score}</b></span>
+    </div>
+
+    <div class="gauge">${gauge(segs, `${s.idx + 1}/${n}`, "question")}</div>
+
+    <div class="qhead">
+      <div class="chips">
+        ${s.cat === "mix" ? `<span class="chip">${catName(q.c)}</span>` : ""}
+        <span class="chip lvl-${q.l}">${lvlName(q.l)}</span>
+      </div>
+      <h2 class="question" tabindex="-1" id="q-text">${fr(q.q)}</h2>
+    </div>
+
+    <div class="choices" role="group" aria-label="${TXT.answers}">
+      ${order.map((ai, k) => {
+        let cls = "", mark = "";
+        if (answered) {
+          if (ai === 0) { cls = "correct"; mark = `<span class="mark" aria-label="${T("bonne réponse", "correct answer")}">✓</span>`; }
+          else if (ai === pick) { cls = "wrong"; mark = `<span class="mark" aria-label="${T("votre réponse", "your answer")}">✗</span>`; }
+          else cls = "dim";
+        }
+        return `<button class="choice ${cls}" data-pick="${k}" id="choice-${k}" ${answered ? "disabled" : ""}>
+          <span class="letter" aria-hidden="true">${LETTERS[k]}</span><span class="txt">${fr(q.a[ai])}</span>${mark}</button>`;
+      }).join("")}
+    </div>
+
+    <div class="feedback" aria-live="polite">${answered ? `
+      <p class="verdict ${pick === 0 ? "ok" : "ko"}">${pick === 0 ? T("Bonne réponse", "Correct") : fr(TXT.notQuite + q.a[0])}</p>
+      <p>${fr(q.x)}</p>
+      <p class="ref">${TXT.source}<b>${q.r}</b></p>` : ""}</div>
+
+    <div class="actions${answered ? "" : " idle"}">
+      ${answered
+        ? `<button class="btn" data-next id="next">${last ? TXT.seeScore : T("Question suivante", "Next question")}</button>`
+        : `<p class="hint">${T("Touchez une réponse", "Tap an answer")}</p>`}
+    </div>`;
+}
+
+function renderResults() {
+  const s = state, n = s.list.length;
+  const score = s.picks.filter(p => p === 0).length;
+  const msg =
+    score === n ? [praise(1), T("Toutes les réponses sont justes.", "Every answer is right.")] :
+    score >= n * 0.8 ? [praise(0.8), T("Il ne manque presque rien.", "Almost a clean sheet.")] :
+    score >= n * 0.5 ? [praise(0.5), T("Relisez les sources des questions manquées pour aller plus loin.", "Reread the sources of the questions you missed to go further.")] :
+    [praise(0), T("Les explications ci-dessous donnent les références à relire.", "The explanations below give the references to reread.")];
+
+  $app.innerHTML = `
+    <div class="topbar">
+      <button class="link" data-themes id="back">${T("‹ Thèmes", "‹ Themes")}</button>
+      <span class="cat-name">${catName(s.cat)}</span>
+    </div>
+
+    <div class="result-head">
+      <div class="gauge">${gauge(s.picks.map(p => p === 0 ? "good" : "bad"), `${score}/${n}`, T("bonnes réponses", "correct answers"))}</div>
+      <h2>${fr(msg[0])}</h2>
+      <p>${fr(msg[1])}</p>
+      ${s.newRecord ? `<span class="chip record">${TXT.newBest}</span>` : ""}
+    </div>
+
+    <section>
+      <h2 class="label">${T("Vos réponses", "Your answers")}</h2>
+      <ol class="review">
+        ${s.list.map((qi, i) => {
+          const q = L(Q[qi]), ok = s.picks[i] === 0;
+          return `<li>
+            <span class="st ${ok ? "ok" : "ko"}" aria-label="${ok ? T("juste", "correct") : T("faux", "wrong")}">${ok ? "✓" : "✗"}</span>
+            <div>
+              <p class="rq">${fr(q.q)}</p>
+              <p class="ra">${ok ? "" : `<s>${fr(q.a[s.picks[i]])}</s> · `}<b>${fr(q.a[0])}</b> · ${q.r}</p>
+            </div></li>`;
+        }).join("")}
+      </ol>
+    </section>
+
+    <div class="actions stack">
+      <button class="btn" data-replay id="replay">${T("Rejouer ce thème", "Play this theme again")}</button>
+      <button class="btn ghost" data-themes id="home">${T("Choisir un autre thème", "Choose another theme")}</button>
+    </div>`;
+}
+
+function render(focusId) {
+  $app.className = state.screen === "home" ? "app home" : "app";   // l'accueil tient sur un seul écran
+  if (state.screen === "quiz") renderQuiz();
+  else if (state.screen === "results") renderResults();
+  else if (state.screen === "themes") renderThemes();
+  else if (state.screen === "about") renderAbout();
+  else if (state.screen === "game") $app.innerHTML = gameOf(state.game).render(state.g);
+  else renderHome();
+  if (focusId) document.getElementById(focusId)?.focus({ preventScroll: true });
+}
+
+/* ---------- Actions ---------- */
+// Ouvre un écran sans partie en cours : l'accueil ("home"), les thèmes du quiz ("themes") ou « À propos » ("about")
+function go(screen) {
+  state = { screen };
+  window.scrollTo(0, 0);
+  render();
+}
+
+function start(cat) {
+  const pool = Q.map((q, i) => i).filter(i => cat === "mix" || Q[i].c === cat);
+  const list = shuffle(pool).slice(0, PER_ROUND);
+  state = { screen: "quiz", cat, list, orders: list.map(() => shuffle([0, 1, 2, 3])), idx: 0, picks: [] };
+  window.scrollTo(0, 0);
+  render("q-text");
+}
+function pick(k) {
+  if (state.picks[state.idx] != null) return;
+  state.picks[state.idx] = state.orders[state.idx][k];
+  render("next");
+}
+function next() {
+  if (state.idx < state.list.length - 1) {
+    state.idx++;
+    window.scrollTo(0, 0);
+    render("q-text");
+    return;
+  }
+  const score = state.picks.filter(p => p === 0).length;
+  const best = loadBest();
+  state.newRecord = best[state.cat] == null || score > best[state.cat];
+  if (state.newRecord) { best[state.cat] = score; saveBest(best); }
+  state.screen = "results";
+  window.scrollTo(0, 0);
+  render("replay");
+}
+
+$app.addEventListener("click", e => {
+  const a = e.target.closest("[data-act]");
+  if (a && state.screen === "game") { gameOf(state.game).act(a.dataset.act, a, state.g, e); return; }
+  const b = e.target.closest("button");
+  if (!b) return;
+  const d = b.dataset;
+  if (d.start) start(d.start);
+  else if (d.game) startGame(d.game);
+  else if (d.lang) setLang(d.lang);
+  else if ("themeNext" in d) nextTheme();
+  else if ("install" in d) install();
+  else if (d.pick != null) pick(+d.pick);
+  else if ("next" in d) next();
+  else if ("replay" in d) state.screen === "game" ? startGame(state.game) : start(state.cat);
+  else if ("themes" in d) go("themes");
+  else if ("about" in d) go("about");
+  else if ("home" in d) go("home");
+});
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (state.screen === "game") { gameOf(state.game).key?.(e, state.g); return; }
+  if (state.screen !== "quiz") return;
+  const k = "1234".indexOf(e.key);
+  if (k >= 0 && state.picks[state.idx] == null) { e.preventDefault(); pick(k); }
+});
+
+// Bouton retour d'Android : le quiz revient à ses thèmes, le reste à l'accueil, et l'accueil quitte l'app
+const CapApp = window.Capacitor?.Plugins?.App;
+if (CapApp) {
+  CapApp.addListener("backButton", () => {
+    if (state.screen === "home") CapApp.exitApp();
+    else go(state.screen === "quiz" || state.screen === "results" ? "themes" : "home");
+  });
+}
+</script>
+
+<script src="jeux/qui-suis-je.js"></script>
+<script src="jeux/frise.js"></script>
+<script src="jeux/carte-fonds.js"></script>
+<script src="jeux/carte.js"></script>
+<script src="jeux/mot-mystere.js"></script>
+<script src="jeux/memoire.js"></script>
+<script>render();</script>
+</body>
+</html>
