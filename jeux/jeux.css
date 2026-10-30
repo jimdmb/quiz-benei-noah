@@ -1,0 +1,212 @@
+/* Styles des jeux. Les couleurs et polices viennent des variables définies dans index.html ;
+   seules les teintes de la carte et de la lettre « mal placée » sont ajoutées ici. */
+:root {
+  --sea: #CADAF2;
+  --land: #F8F9FB;
+  --on-gold: #16203A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --sea: #0F1830; --land: #2A3450; }
+}
+:root[data-theme="dark"] { --sea: #0F1830; --land: #2A3450; }
+
+/* ---------- Commun ---------- */
+.g-help { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+/* ---------- Qui suis-je ? ---------- */
+.clues { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.clue {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.clue:last-child { animation: rise .25s ease both; }
+.clue-n { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.clue-t { font-family: var(--f-display); font-size: 1.12rem; line-height: 1.35; }
+.names { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.opt {
+  min-height: 52px;
+  padding: 8px 10px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  transition: border-color .15s ease, background .2s ease, opacity .2s ease;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); }
+.opt:disabled { cursor: default; color: var(--ink); }
+.opt.correct { border-color: var(--good); background: var(--good-soft); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.opt.dim { opacity: 0.5; }
+
+/* ---------- La frise ---------- */
+.frise {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+/* le trait de la frise passe derrière les numéros */
+.frise::before { content: ""; position: absolute; left: 14px; top: 16px; bottom: 16px; width: 2px; background: var(--line); }
+.frise li { position: relative; display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 10px; align-items: center; }
+.ev-n {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.frise li.empty .ev-n { background: var(--bg); color: var(--muted); border: 2px solid var(--line); }
+.frise li.ok .ev-n { background: var(--good); color: var(--surface); }
+.frise li.ko .ev-n { background: var(--bad); color: var(--surface); }
+.ev {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  min-height: 48px;
+  justify-content: center;
+  padding: 10px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  text-align: left;
+}
+button.ev { cursor: pointer; transition: border-color .15s ease; }
+button.ev:hover { border-color: var(--accent); }
+.frise li.empty .ev { min-height: 38px; padding-block: 6px; border-style: dashed; background: transparent; color: var(--muted); font-size: 0.9rem; }
+.frise li.ok .ev { border-color: var(--good); background: var(--good-soft); }
+.frise li.ko .ev { border-color: var(--bad); background: var(--bad-soft); }
+.ev-t { font-weight: 700; line-height: 1.3; }
+.ev-w { color: var(--muted); font-size: 0.85rem; }
+.pool { display: flex; flex-direction: column; gap: 8px; }
+
+/* ---------- La carte ---------- */
+.map-wrap { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--sea); }
+.map { display: block; width: 100%; height: auto; touch-action: manipulation; cursor: pointer; }
+.map .sea { fill: var(--sea); }
+.map .land { fill: var(--land); stroke: var(--muted); stroke-width: 0.5; stroke-linejoin: round; }
+.map .water { fill: var(--sea); stroke: var(--muted); stroke-width: 0.4; }
+.map .river { fill: none; stroke: var(--accent); stroke-width: 1.1; stroke-linecap: round; stroke-linejoin: round; opacity: 0.5; }
+.map .lbl { font-family: var(--f-body); font-size: 8.5px; font-style: italic; fill: var(--muted); }
+.map .dot { fill: var(--ink); stroke: var(--land); stroke-width: 1.6; transition: fill .2s ease, opacity .2s ease; }
+.map .dot:focus-visible { outline: none; stroke: var(--accent); stroke-width: 3; }
+.map .dot.good { fill: var(--good); }
+.map .dot.bad { fill: var(--bad); }
+.map .dot.dim { opacity: 0.3; }
+.map .name { font-family: var(--f-body); font-size: 11px; font-weight: 700; fill: var(--ink); paint-order: stroke; stroke: var(--land); stroke-width: 3px; stroke-linejoin: round; }
+
+/* ---------- Mot mystère ---------- */
+.mm-grid {
+  /* taille d'une case : au plus 52 px, sinon ce que permet la largeur de l'écran pour n lettres */
+  --t: min(52px, calc((min(100vw, 30rem) - 32px - (var(--n) - 1) * 6px) / var(--n)));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.mm-row { display: flex; gap: 6px; }
+.mm-tile {
+  width: var(--t);
+  height: var(--t);
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  font-weight: 700;
+  font-size: calc(var(--t) * 0.5);
+  line-height: 1;
+}
+.mm-tile.filled { border-color: var(--muted); }
+.mm-tile.ok { background: var(--good); border-color: var(--good); color: var(--surface); }
+.mm-tile.near { background: var(--k3); border-color: var(--k3); color: var(--on-gold); }
+.mm-tile.no { background: var(--line); border-color: var(--line); color: var(--muted); }
+.mm-kb {
+  position: sticky;
+  bottom: 0;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-block: 10px calc(12px + var(--inset-bottom));
+  background: var(--bg);
+}
+.mm-kb-row { display: flex; justify-content: center; gap: 4px; }
+.mm-key {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 42px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.mm-key.wide { flex: 1.9 1 0; max-width: 76px; font-size: 0.78rem; }
+.mm-key.ok { background: var(--good); border-color: var(--good); color: var(--surface); }
+.mm-key.near { background: var(--k3); border-color: var(--k3); color: var(--on-gold); }
+.mm-key.no { background: var(--line); border-color: var(--line); color: var(--muted); }
+
+/* ---------- Mémoire ---------- */
+.mem-decks { display: flex; flex-wrap: wrap; gap: 6px; }
+.mem-deck {
+  padding: 6px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.mem-deck.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.mem-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.mem-card {
+  aspect-ratio: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px;
+  border: 1.5px solid var(--accent);
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  text-align: center;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background .2s ease, border-color .2s ease;
+}
+.mem-card svg { width: 58%; height: auto; fill: none; stroke: var(--accent-ink); stroke-width: 2.4; stroke-linecap: round; opacity: 0.75; }
+.mem-card.up { background: var(--surface); color: var(--ink); }
+.mem-card.done { background: var(--good-soft); border-color: var(--good); color: var(--ink); cursor: default; }
+.mem-card .he { font-size: 1.55rem; font-weight: 700; line-height: 1.15; }
+.mem-tr { font-size: 0.72rem; font-style: italic; color: var(--muted); }
+.mem-t { font-weight: 700; }
+.mem-list { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; font-size: 0.92rem; }
+.mem-list .he { font-size: 1.1rem; font-weight: 700; }

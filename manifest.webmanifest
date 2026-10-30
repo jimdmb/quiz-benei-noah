@@ -1,0 +1,19 @@
+{
+  "name": "Bnei Noah Quiz",
+  "short_name": "Bnei Noah",
+  "description": "Bible quiz and games for the Bnei Noah: Torah, Prophets, Second Temple, Jewish festivals and the seven Noahide laws.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#E9EEF2",
+  "theme_color": "#16203A",
+  "categories": ["games", "education"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
